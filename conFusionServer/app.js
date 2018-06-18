@@ -16,6 +16,15 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+app.all('*', (req, res, next) => {
+  if(req.secure) {
+    return next();
+  }
+  else {
+    res.redirect(307, 'https://' + req.hostname + ':' + app.get('secPort') + req.url);
+  }
+});
+
 var index = require('./routes/index');
 var user = require('./routes/users');
 var dishRouter = require('./routes/dishRouter');
